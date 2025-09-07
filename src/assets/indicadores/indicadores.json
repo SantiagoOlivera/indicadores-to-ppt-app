@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ASD1",
+    "numeroIndicador": 1,
+    "descripcion": "Cantidad  de nuevos servicios",
+    "seCumplioLaMeta": true,
+    "detalle": "Un pedido con devolución, no se reprograma la fecha estimada. Un pedido con tiempo de desarrollo, automáticamente se reprograma para la siguiente semana. Un pedido sin programación, se deberá establecer una nueva fecha prometida.",
+    "comentarios": "Comentarios del indicador 1",
+    "meta": "Relevar en el 2020 las NC`s diarias y para el 2021 establecer metas por tipo de NC. Analizaremos la NC detectadas (fecha de detección), descartando las anuladas y tomando en cuenta el resto de los estados. Verde si es menor al trimestre anterior o rojo si es superior. ",
+    "resultado": "Se cumplió",
+    "responsable": "Coordinador de Administración"
+  }
+]
