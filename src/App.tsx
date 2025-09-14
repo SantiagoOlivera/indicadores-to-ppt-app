@@ -100,7 +100,7 @@ function App() {
   const ID_STEP_PREVIEW_Y_EXPORTAR_A_PPT = "previewYExportarAPpt";
 
   const handleClickNextStep = (step: number, idStep: string) => {
-    //console.log("Next step clicked ", step);
+    console.log("Next step clicked ", step);
     if (idStep === ID_STEP_PREVIEW_Y_EXPORTAR_A_PPT) {
       indicadoresRefs.current.downloadFile();
     }
