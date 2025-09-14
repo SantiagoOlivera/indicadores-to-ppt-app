@@ -6,6 +6,7 @@ import { Download } from "react-bootstrap-icons";
 
 export interface ITemplateProps {
   id: string;
+  nombreArchivo: string;
 }
 
 export abstract class Template extends React.Component<ITemplateProps> {
@@ -18,7 +19,11 @@ export abstract class Template extends React.Component<ITemplateProps> {
     super(props);
   }
 
-  public exportToPptx(): void {
+  public downloadFile(): void {
+    this.exportToPptx();
+  }
+
+  private exportToPptx(): void {
     const pptx = new PptxGenJS();
     pptx.defineLayout({
       name: "MyCustomLayout",
@@ -27,10 +32,10 @@ export abstract class Template extends React.Component<ITemplateProps> {
     });
     pptx.layout = "MyCustomLayout";
     // Implement export logic here
-    console.log("Exporting to PPTX...");
+    //console.log("Exporting to PPTX...");
     const e = document.getElementById(this.props.id);
     const pages = e?.getElementsByClassName("ppt-page");
-    console.log(e, pages);
+    //console.log(e, pages);
     if (!pages) {
       console.error("No pages found to export.");
     } else if (pages?.length === 0) {
@@ -39,17 +44,17 @@ export abstract class Template extends React.Component<ITemplateProps> {
     } else {
       for (let i = 0; i < pages?.length; i++) {
         // 2. Add a Slide
-        console.log("Page:" + i, pages.length);
+        //console.log("Page:" + i, pages.length);
         const template = document.getElementById(this.props.id);
         if (!template) {
           throw new Error(
             `Template element with id '${this.props.id}' not found.`
           );
         }
-        const rows = pages[i].querySelectorAll(":scope > .row");
+        //const rows = pages[i].querySelectorAll(":scope > .row");
         const printables = pages[i].getElementsByClassName("printable");
-        console.log("Rows in page", rows, rows.length);
-        console.log("Printables", printables, printables.length);
+        //console.log("Rows in page", rows, rows.length);
+        //console.log("Printables", printables, printables.length);
 
         const slide = pptx.addSlide();
         for (let j = 0; j < printables.length; j++) {
@@ -66,17 +71,17 @@ export abstract class Template extends React.Component<ITemplateProps> {
           const stylesPrintable: CSSStyleDeclaration = window.getComputedStyle(
             printables[j]
           );
-          console.log(
+          /* console.log(
             printables[j].getBoundingClientRect(),
             stylesPrintable,
             printables[j].tagName
-          );
+          ); */
 
           if (printables[j].tagName.toUpperCase().startsWith("H")) {
-            console.log(
+            /* console.log(
               printables[j].innerHTML.toString(),
               Functions.rgbRgbaToHex(stylesPrintable.color)
-            );
+            ); */
 
             slide.addText(printables[j].innerHTML.toString(), {
               shape: pptx.ShapeType.rect,
@@ -131,11 +136,11 @@ export abstract class Template extends React.Component<ITemplateProps> {
               rowH.push(
                 r.getBoundingClientRect().height / Template.DPI_BY_INCH
               );
-              console.log(
+              /* console.log(
                 r,
                 "Row height",
                 r.getBoundingClientRect().height / Template.DPI_BY_INCH
-              );
+              ); */
               for (const c of r.cells) {
                 const stylesCell: CSSStyleDeclaration =
                   window.getComputedStyle(c);
@@ -286,7 +291,7 @@ export abstract class Template extends React.Component<ITemplateProps> {
         }
       }
     }
-    pptx.writeFile({ fileName: "Test.pptx" });
+    pptx.writeFile({ fileName: `${this.props.nombreArchivo}.pptx` });
   }
 
   private svgToBase64(svgElement: HTMLImageElement) {

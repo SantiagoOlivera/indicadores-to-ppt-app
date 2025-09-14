@@ -12,7 +12,7 @@ export class Functions {
       rgbaString.replace("rgba", "").split(",");
       if (split.length === 4) {
         for (const s of split) {
-          console.log(s, Number(s.replace("(", "").replace(")", "")));
+          //console.log(s, Number(s.replace("(", "").replace(")", "")));
           const n: number = Number(s.replace("(", "").replace(")", ""));
           ret += toHex(n);
         }
@@ -21,7 +21,7 @@ export class Functions {
       split = rgbaString.replace("rgb", "").split(",");
       if (split.length === 3) {
         for (const s of split) {
-          console.log(s, Number(s.replace("(", "").replace(")", "")));
+          //console.log(s, Number(s.replace("(", "").replace(")", "")));
           const n: number = Number(s.replace("(", "").replace(")", ""));
           ret += toHex(n);
         }

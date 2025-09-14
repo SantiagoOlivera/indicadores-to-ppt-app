@@ -1,7 +1,4 @@
-/* import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg"; */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import DataTable from "./components/Table/DataTable";
 import { IndicadoresTemplate } from "./components/Template/IndicadoresTemplate/IndicadoresTemplate";
@@ -11,8 +8,6 @@ import Step from "./components/Stepper/Step";
 import indicadores from "../src/assets/indicadores/indicadores.json";
 
 function App() {
-  //const [count, setCount] = useState(0);
-
   const columns = [
     {
       name: "N° Indicador",
@@ -81,23 +76,15 @@ function App() {
       type: "boolean",
       editable: true,
     },
-    /* {
-      name: "C3",
-      data: "text",
-      type: "text",
-      editable: true,
-    },
-    {
-      name: "C4",
-      data: "text",
-      type: "text",
-      editable: true,
-    }, */
   ];
 
   const data = indicadores;
 
   const [trimestre, setTrimestre] = useState<number>(1);
+  const indicadoresRefs = useRef<any>(null);
+  const [nombreArchivo, setNombreArchivo] = useState<string>(
+    `Indicadores ${new Date().getFullYear()} - Trimestre ${trimestre}`
+  );
   const [dataIndicadores, setDataIndicadores] = useState<Array<any>>([]);
 
   const handleChangeData = (data: any) => {
@@ -106,78 +93,94 @@ function App() {
     setDataIndicadores(data);
   };
 
+  const handleChangeNombreArchivo = (nombreArchivo: string) => {
+    setNombreArchivo(nombreArchivo);
+  };
+
+  const ID_STEP_PREVIEW_Y_EXPORTAR_A_PPT = "previewYExportarAPpt";
+
+  const handleClickNextStep = (step: number, idStep: string) => {
+    //console.log("Next step clicked ", step);
+    if (idStep === ID_STEP_PREVIEW_Y_EXPORTAR_A_PPT) {
+      indicadoresRefs.current.downloadFile();
+    }
+  };
+
   return (
     <>
-      {/* <div className="container">
-        <div className="row">
-          <div className="col-2" style={{ padding: "10px" }}>
-            <select className="form-control" value={trimestre}>
-              <option value={1} onClick={() => setTrimestre(1)}>
-                Trimestre 1
-              </option>
-              <option value={2} onClick={() => setTrimestre(2)}>
-                Trimestre 2
-              </option>
-              <option value={3} onClick={() => setTrimestre(3)}>
-                Trimestre 3
-              </option>
-              <option value={4} onClick={() => setTrimestre(4)}>
-                Trimestre 4
-              </option>
-            </select>
-          </div>
-          <div className="col-12">
-            <DataTable
-              id="test"
-              title="Generar ppt de indicadores"
-              columns={columns}
-              data={data}
-              addRows={true}
-              changeDataCallback={(data: any) => {
-                console.log("Change data", data);
-                handleChangeData(data);
-              }}
-              //getDatatableDataCallback={handleChangeData}
-            ></DataTable>
-          </div>
-        </div>
-      </div>
-
-      <div className="w-100">
-        <IndicadoresTemplate
-          data={{
-            anio: new Date().getFullYear(),
-            trimestre: trimestre,
-            indicadores: dataIndicadores,
-          }}
-          id={"indicadores-template"}
-        ></IndicadoresTemplate>
-      </div> */}
-
       <Stepper
-        activeStep={0}
+        currentStep={0}
         onStepClick={(stepIndex) => console.log("Clicked step:", stepIndex)}
         previousButtonText="Volver"
         nextButtonText="Preview .ppt"
-        finishButtonText="Exportar .ppt"
+        finishButtonText="Exportar a .ppt"
+        onClickNextStep={handleClickNextStep}
+        maxWidth={2100}
       >
-        <Step title="Cargar Indicadores">
+        <Step id="cargarDeIndicadores" title="Cargar de indicadores">
           <div className="row">
-            <div className="col-2" style={{ padding: "10px" }}>
-              <select className="form-control" value={trimestre}>
-                <option value={1} onClick={() => setTrimestre(1)}>
+            <div className="col-2">
+              <select
+                className="form-control"
+                value={trimestre}
+                onChange={(e) => setTrimestre(Number(e.target.value))}
+              >
+                <option
+                  value={1}
+                  onClick={() => {
+                    setTrimestre(1);
+                    handleChangeNombreArchivo(
+                      `Indicadores ${new Date().getFullYear()} - Trimestre 1`
+                    );
+                  }}
+                >
                   Trimestre 1
                 </option>
-                <option value={2} onClick={() => setTrimestre(2)}>
+                <option
+                  value={2}
+                  onClick={() => {
+                    setTrimestre(2);
+                    handleChangeNombreArchivo(
+                      `Indicadores ${new Date().getFullYear()} - Trimestre 2`
+                    );
+                  }}
+                >
                   Trimestre 2
                 </option>
-                <option value={3} onClick={() => setTrimestre(3)}>
+                <option
+                  value={3}
+                  onClick={() => {
+                    setTrimestre(3);
+                    handleChangeNombreArchivo(
+                      `Indicadores ${new Date().getFullYear()} - Trimestre 3`
+                    );
+                  }}
+                >
                   Trimestre 3
                 </option>
-                <option value={4} onClick={() => setTrimestre(4)}>
+                <option
+                  value={4}
+                  onClick={() => {
+                    setTrimestre(4);
+                    handleChangeNombreArchivo(
+                      `Indicadores ${new Date().getFullYear()} - Trimestre 4`
+                    );
+                  }}
+                >
                   Trimestre 4
                 </option>
               </select>
+            </div>
+            <div className="col-2">
+              <input
+                type="text"
+                className="form-control"
+                value={nombreArchivo}
+                onChange={(e) => {
+                  handleChangeNombreArchivo(e.target.value);
+                }}
+                disabled={true}
+              />
             </div>
             <div className="col-12">
               <DataTable
@@ -187,63 +190,31 @@ function App() {
                 data={data}
                 addRows={true}
                 changeDataCallback={(data: any) => {
-                  console.log("Change data", data);
+                  //console.log("Change data", data);
                   handleChangeData(data);
                 }}
-                //getDatatableDataCallback={handleChangeData}
               ></DataTable>
             </div>
           </div>
         </Step>
-        <Step title="Preview y Exportar a .ppt">
+        <Step
+          id={ID_STEP_PREVIEW_Y_EXPORTAR_A_PPT}
+          title="Preview y Exportar a .ppt"
+        >
           <div className="w-100" style={{ overflow: "auto" }}>
             <IndicadoresTemplate
+              ref={indicadoresRefs}
               data={{
                 anio: new Date().getFullYear(),
                 trimestre: trimestre,
                 indicadores: dataIndicadores,
               }}
               id={"indicadores-template"}
+              nombreArchivo={nombreArchivo}
             ></IndicadoresTemplate>
           </div>
         </Step>
       </Stepper>
-
-      {/* <Table id="test-table" title="Hi World!">
-        <HeaderRow>
-          <HeaderCe
-          ll>C1</HeaderCell>
-          <HeaderCell>C2</HeaderCell>
-        </HeaderRow>
-        <DataRow>
-          <DataCell>A</DataCell>
-          <DataCell>B</DataCell>
-        </DataRow>
-        <DataRow>
-          <DataCell>A</DataCell>
-          <DataCell>B</DataCell>
-        </DataRow>
-      </Table> */}
-      {/* <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
     </>
   );
 }

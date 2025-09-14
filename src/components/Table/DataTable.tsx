@@ -115,8 +115,9 @@ function DataTable({
   useEffect(() => {
     // This effect runs when the component mounts or when rowsdata changes
     // It can be used to perform side effects, such as logging or fetching data
-    console.log("Rows data updated:", rowsdata, lastaction);
+    //console.log("Rows data updated:", rowsdata, lastaction);
     actionChangeData(lastaction as IActionDataTable);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowsdata]);
 

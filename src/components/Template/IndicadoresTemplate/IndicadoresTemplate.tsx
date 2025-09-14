@@ -33,10 +33,11 @@ export class IndicadoresTemplate extends Template {
   constructor(props: IIndicadoresTemplateProps) {
     super(props);
   }
+
   public render() {
     return (
       <>
-        <div
+        {/* <div
           className="container"
           style={{
             minWidth: Template.WIDTH_PAGE,
@@ -44,7 +45,7 @@ export class IndicadoresTemplate extends Template {
           }}
         >
           {this.renderDefaultHeader()}
-        </div>
+        </div> */}
 
         {/* <div
           className="container"
