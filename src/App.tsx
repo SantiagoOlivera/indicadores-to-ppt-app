@@ -119,7 +119,7 @@ function App() {
       >
         <Step id="cargarDeIndicadores" title="Cargar de indicadores">
           <div className="row">
-            <div className="col-2">
+            <div className="col-xl-6 col-sm-6">
               <select
                 className="form-control"
                 value={trimestre}
@@ -171,7 +171,7 @@ function App() {
                 </option>
               </select>
             </div>
-            <div className="col-2">
+            <div className="col-xl-6 col-sm-6">
               <input
                 type="text"
                 className="form-control"
@@ -182,7 +182,7 @@ function App() {
                 disabled={true}
               />
             </div>
-            <div className="col-12">
+            <div className="col-12" style={{ overflow: "auto" }}>
               <DataTable
                 id="test"
                 title=""
